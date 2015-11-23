@@ -1,9 +1,9 @@
 /**
  * Created by newuser on 11/21/15.
  */
-public class Stack<T> {
+public class Stack {
 
-    node<T> top;
+    node top;
 
     public Stack(){
         top=null;
@@ -13,7 +13,7 @@ public class Stack<T> {
         return(top==null);
     }
 
-    public void push(T data){
+    public void push(double data){
         node newnode = new node(data);
 
         if (empty()){
@@ -25,9 +25,9 @@ public class Stack<T> {
         }
     }
 
-    public T pop(){
+    public double pop(){
         if(!empty()){
-            node<T> oldTop = top;
+            node oldTop = top;
             if(top.next!=null){
 
             top= top.next;
@@ -37,9 +37,9 @@ public class Stack<T> {
             top=null;
             return oldTop.data;
         }
-        return null;
+        return Double.MAX_VALUE;
     }
-    public T peek(){
+    public double peek(){
 
         return empty() ? top.data:null;
 

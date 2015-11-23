@@ -1,11 +1,11 @@
 /**
  * Created by newuser on 11/21/15.
  */
-public class Queue<T> {
+public class Queue {
 
 
-    Stack<T> stack1;
-    Stack<T> stack2;
+    Stack stack1;
+    Stack stack2;
     node top;
     public Queue(){
         top =null;
@@ -31,7 +31,7 @@ public class Queue<T> {
         }
     }
 
-    public void enqueue(T data){
+    public void enqueue(double data){
         if (empty()){
             stack1.push(data);
             top = new node(stack1.peek());
@@ -40,11 +40,11 @@ public class Queue<T> {
         }
     }
 
-    public T dequeue(){
+    public double dequeue(){
 
         if (!empty()){
 
-               T data = stack1.pop();
+               double data = stack1.pop();
 
                while (!stack2.empty()) {
                    stack1.push(stack2.pop());
@@ -53,7 +53,7 @@ public class Queue<T> {
             return data;
         }
 
-        return null;
+        return Double.MAX_VALUE;
     }
 
 }

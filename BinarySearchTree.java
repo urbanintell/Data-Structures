@@ -118,8 +118,6 @@ public class BinarySearchTree {
         }
     }
 
-
-
     public class node{
         double data;
         node parent;

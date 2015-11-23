@@ -19,7 +19,6 @@ public class HashTable {
         array[h(data)].delete(data);
     }
 
-
     public boolean search(double data){
 
         return array[h(data)].search(data)==data;

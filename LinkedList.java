@@ -1,10 +1,10 @@
 /**
  * Created by newuser on 11/21/15.
  */
-public class LinkedList<T> {
+public class LinkedList {
 
 
-    node<T> head;
+    node head;
     public LinkedList(){
         head=null;
     }
@@ -21,24 +21,34 @@ public class LinkedList<T> {
         }
     }
 
-    public void insert(T data){
+    public void insert(double data){
         node newnode = new node(data);
-
         if (empty()){
-            head = new node<T>(data);
+            head = new node(data);
         }else{
             node current = head;
             while (current.next!=null){
-
                 current=current.next;
-
             }
-
             current.next = newnode;
         }
     }
 
-    public void delete(T data){
+    public double search(double data){
+       if (empty()){
+           return Double.MAX_VALUE;
+       }else{
+           for(node current =head; current.next!=null; current=current.next){
+               if (current.data==data){
+                    return current.data;
+               }
+           }
+       }
+        return Double.MAX_VALUE;
+
+    }
+
+    public void delete(double data){
          if (empty()){
              System.out.println("EMPTY");
              return;

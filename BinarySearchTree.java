@@ -1,31 +1,21 @@
 /**
- * Created by newuser on 11/23/15.
  */
 public class BinarySearchTree {
-
     node root;
-
-
     public static void main(String[] args) {
         BinarySearchTree tree = new BinarySearchTree();
-
         tree.insert(2);
         tree.insert(1);
         tree.insert(3);
-
         System.out.println(tree.search(6));
     }
-
     public BinarySearchTree(){
             root=null;
     }
-
     public boolean empty(){
         return(root==null);
     }
-
     public boolean search(double data){
-
         if (empty()){
             return false;
         }else{
@@ -38,14 +28,11 @@ public class BinarySearchTree {
             }else {
                 current = current.rightChild;
             }
-
             }
         }
         return false;
     }
-
     public void insert(double data){
-
         node newnode = new node(data);
         if (empty()){
             root = new node(data);
@@ -61,7 +48,6 @@ public class BinarySearchTree {
             }else{
                 current= current.rightChild;
             }
-
          }
             newnode.parent = parent;
             if(parent==null){
@@ -74,14 +60,22 @@ public class BinarySearchTree {
             }else{
                 root.leftChild = newnode;
             }
-
         }
-
     }
-
-
-
-
+    public double minValue(){
+        node current = root;
+        while(current.leftChild!=null){
+            current = current.leftChild;
+        }
+        return current.data;
+    }
+    public double maxValue(){
+        node current = root;
+        while(current.rightChild!=null){
+            current = current.rightChild;
+        }
+        return current.data;
+    }
     public void inorder(){
         inorder(root);
     }
@@ -92,9 +86,6 @@ public class BinarySearchTree {
             inorder(node.rightChild);
         }
     }
-
-
-
     public void preorder(){
         preorder(root);
     }
@@ -104,7 +95,6 @@ public class BinarySearchTree {
             preorder(node.leftChild);
             preorder(node.rightChild);
         }
-
     }
     public void postorder(){
         postorder(root);
@@ -114,10 +104,8 @@ public class BinarySearchTree {
             preorder(node.leftChild);
             preorder(node.rightChild);
             System.out.println(node.data);
-
         }
     }
-
     public class node{
         double data;
         node parent;

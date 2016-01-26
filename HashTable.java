@@ -10,7 +10,7 @@ public class HashTable {
         array = new LinkedList[size];
       }
 
- 
+
     public int h(double data){
         return (int)((Math.pow(data,2)) % array.length) ;
     }

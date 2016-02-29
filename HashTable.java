@@ -32,9 +32,7 @@ public class HashTable {
     }
 
     public boolean search(double data){
-
         return  (array[h(data)]!=null) && array[h(data)].search(data)==data;
-
     }
 
 

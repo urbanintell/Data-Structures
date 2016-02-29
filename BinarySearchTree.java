@@ -1,66 +1,51 @@
+import javax.swing.tree.TreeNode;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
+
+
 /**
  */
 public class BinarySearchTree {
-    node root;
-    public static void main(String[] args) {
-        BinarySearchTree tree = new BinarySearchTree();
-        tree.insert(2);
-        tree.insert(1);
-        tree.insert(3);
-        System.out.println(tree.search(6));
-    }
+    private node root;
+
+
     public BinarySearchTree(){
             root=null;
     }
     public boolean empty(){
         return(root==null);
     }
-    public boolean search(double data){
-        if (empty()){
-            return false;
-        }else{
-            for(node current = root; current!=null; ){
-            if(current.data == data){
-                return true;
-            }
-            else if(current.data>data){
-                current = current.leftChild;
-            }else {
-                current = current.rightChild;
-            }
-            }
-        }
-        return false;
+
+    public node search(double data){
+        return search(root,data);
     }
-    public void insert(double data){
-        node newnode = new node(data);
-        if (empty()){
-            root = new node(data);
-        }else{
-            node current = root;
-            node parent= root;
-        while(current!=null){
-            parent = current;
-            if(current.data==data){
-                current =  current.rightChild;
-            }else if(current.data > data){
-                current = current.leftChild;
-            }else{
-                current= current.rightChild;
-            }
-         }
-            newnode.parent = parent;
-            if(parent==null){
-                root=parent;
-            }
-            else if(newnode.data==root.data){
-                root.rightChild = newnode;
-            }else if(newnode.data > root.data){
-                root.rightChild = newnode;
-            }else{
-                root.leftChild = newnode;
-            }
+    private node search(node n, double data){
+        if(n==null||n.data==data){
+            return n;
         }
+        if(n.data>data){
+            return search(n.leftChild,data);
+        }
+        return search(n.rightChild,data);
+    }
+
+
+
+    public void insert(int data){
+        this.root = insert(root,data);
+    }
+    private node insert(node root, double data) {
+        node newNode = new node(data);
+        if(root==null){
+            return newNode;
+        }
+        if(root.data>data){
+            root.leftChild = insert(root.leftChild,data);
+        }
+        else {
+            root.rightChild = insert(root.rightChild,data);
+        }
+        return root;
     }
     public double minValue(){
         node current = root;
@@ -74,6 +59,7 @@ public class BinarySearchTree {
         while(current.rightChild!=null){
             current = current.rightChild;
         }
+
         return current.data;
     }
     public void inorder(){
@@ -89,7 +75,9 @@ public class BinarySearchTree {
     public void preorder(){
         preorder(root);
     }
-    public void preorder(node node){
+
+
+    private void preorder(node node){
         if(node!=null){
             System.out.println(node.data);
             preorder(node.leftChild);
@@ -99,12 +87,141 @@ public class BinarySearchTree {
     public void postorder(){
         postorder(root);
     }
-    public void postorder(node node){
-        if(node!=null){
-            preorder(node.leftChild);
-            preorder(node.rightChild);
-            System.out.println(node.data);
+    private void postorder(node someNode){
+        if(someNode!=null){
+            postorder(someNode.leftChild);
+            postorder(someNode.rightChild);
+            System.out.println(someNode.data);
         }
+        return;
+    }
+    public double even_and_and(){
+        return even_and_odd(root);
+    }
+
+    private double even_and_odd(node someNode){
+        if(someNode==null){
+            return 0;
+        }
+        if(someNode.leftChild==null&&someNode.rightChild==null){
+            return someNode.data%2==0 ? someNode.data : - someNode.data;
+        }
+
+        if(someNode.data%2==0){
+            return even_and_odd(someNode.rightChild) + even_and_odd(someNode.leftChild) + someNode.data;
+        } else {
+
+            return even_and_odd(someNode.leftChild) + even_and_odd(someNode.rightChild) - someNode.data;
+        }
+
+
+    }
+
+
+
+    public void levelOrderTraversal(){
+        levelOrderTraversal(root);
+    }
+
+    private void levelOrderTraversal(node root){
+        LinkedBlockingQueue<node> queue = new LinkedBlockingQueue<node>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            node temp = queue.poll();
+
+            System.out.println(temp.data);
+
+            if (temp.leftChild!=null){
+                queue.add(temp.leftChild);
+            }
+            if(temp.rightChild!=null){
+                queue.add(temp.rightChild);
+            }
+        }
+    }
+    public int height(node root){
+        if(root==null){
+            return 0;
+        }
+        int right = height(root.rightChild)+1;
+        int left = height(root.leftChild)+1;
+        return Math.max(right,left);
+    }
+
+
+    public node getRoot(){
+        if(root==null){
+            return null;
+        }else{
+            return root;
+        }
+    }
+
+    private void transplant(node u, node v){
+        if(u.parent==null){
+            root=v;
+        }
+        else if(u==u.parent.leftChild){
+            u.parent.leftChild=v;
+        }else{
+            u.parent.rightChild=v;
+        }
+        if(v!=null){
+            v.parent=u.parent;
+        }
+    }
+
+    private node treeSuccessor(node x){
+        if(x.rightChild!=null){
+            return minimum(x.rightChild);
+        }
+        node parent = x.parent;
+        while(parent!=null&&x==parent.rightChild){
+            x=parent;
+            parent=parent.parent;
+        }
+        return parent;
+    }
+    public node minimum(node x){
+        node current = x;
+        while(current.leftChild!=null){
+            current=current.leftChild;
+        }
+        return current;
+    }
+
+    public node maximum(node x){
+        node current = x;
+        while(current.rightChild!=null){
+            current=current.rightChild;
+        }
+        return current;
+    }
+
+    public void delete(node x){
+        if(x.leftChild==null){
+            transplant(x,x.leftChild);
+        }else if(x.rightChild==null){
+            transplant(x, x.rightChild);
+        }else{
+            node y = minimum(x.rightChild);
+            if(y.parent!=null){
+                transplant(y, y.rightChild);
+                y.rightChild=x.rightChild;
+                y.rightChild.parent = y;
+
+            }
+            transplant(x,y);
+            y.leftChild=x.leftChild;
+            y.leftChild.parent = y;
+        }
+    }
+
+    public int countNodes(node root){
+        if (root==null){
+            return 0;
+        }
+        return countNodes(root.leftChild) + countNodes(root.rightChild) +1;
     }
     public class node{
         double data;
@@ -116,6 +233,13 @@ public class BinarySearchTree {
             parent = null;
             leftChild=null;
             rightChild=null;
+        }
+
+        public void setData(double data) {
+            this.data = data;
+        }
+        public double getData(){
+            return data;
         }
     }
 }
